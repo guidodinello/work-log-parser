@@ -1,0 +1,72 @@
+from custom_types import Logger
+from time_utils import TimeFormatter
+from work_utils import WorkDay
+
+
+class WorkLogReporter:
+    """Handles formatting and displaying work log summaries"""
+
+    def __init__(self, logger: Logger):
+        self.logger = logger
+
+    def generate_report(self, workdays: list[WorkDay]) -> None:
+        self.logger.info("\n📊 Work Log Summary")
+
+        for day in workdays:
+            self.logger.info(f"\n▸ Date: {day.date.strftime('%d/%m')}")
+
+            actual_start = f"\t[Actual start: {TimeFormatter.format_time(day.start_time.actual_end)}]"
+
+            delay = int(
+                (
+                    day.start_time.actual_end - day.start_time.scheduled_end
+                ).total_seconds()
+                / 60
+            )
+            balance = f"({delay}m debt)" if delay else ""
+
+            msg = f"\tLogged start: {TimeFormatter.format_time(day.start_time.start)} {actual_start} {balance}"
+            self.logger.info(msg)
+
+            # Report breaks
+            for entry_type, break_time in day.breaks:
+                actual_end = (
+                    f"[ended {TimeFormatter.format_time(break_time.actual_end)}]"
+                    if break_time.actual_end
+                    else ""
+                )
+                overtime = break_time.get_overtime()
+                status = (
+                    f"({abs(int(overtime))}m {'debt' if overtime > 0 else 'credit'})"
+                    if overtime != 0
+                    else ""
+                )
+
+                self.logger.info(
+                    f"\t• {entry_type.value}: {TimeFormatter.format_time(break_time.start)} -"
+                    f" {TimeFormatter.format_time(break_time.scheduled_end)}"
+                    f" {actual_end}"
+                    f" {status}"
+                )
+
+            # Report expected out time
+            expected_out = day.get_expected_out()
+            overtime = int(day.calculate_overtime())
+            if overtime < 0:
+                overtime_type = "credit"
+                sign = "-"
+            else:
+                overtime_type = "debt"
+                sign = "+"
+            extra = (
+                f"({sign}{abs(overtime)}m for 0 day {overtime_type})"
+                if overtime != 0
+                else ""
+            )
+            actual_expected_out = day.get_expected_out(work_hours=9 + overtime / 60)
+            self.logger.info(
+                f"\tExpected out: {TimeFormatter.format_time(expected_out)}"
+                f" {extra}"
+                f" {TimeFormatter.format_time(actual_expected_out
+            )}"
+            )
