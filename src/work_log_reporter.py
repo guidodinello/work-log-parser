@@ -11,6 +11,7 @@ class WorkLogReporter:
 
     def generate_report(self, workdays: list[WorkDay]) -> None:
         self.logger.info("\n📊 Work Log Summary")
+        total_overtime = 0
 
         for day in workdays:
             self.logger.info(f"\n▸ Date: {day.date.strftime('%d/%m')}")
@@ -52,6 +53,9 @@ class WorkLogReporter:
             # Report expected out time
             expected_out = day.get_expected_out()
             overtime = int(day.calculate_overtime())
+
+            total_overtime += overtime
+
             if overtime < 0:
                 overtime_type = "credit"
                 sign = "-"
@@ -70,3 +74,16 @@ class WorkLogReporter:
                 f" {TimeFormatter.format_time(actual_expected_out
             )}"
             )
+
+        self.logger.info("\n📈 Overall Summary")
+        if total_overtime < 0:
+            summary_type = "credit"
+            sign = "-"
+        else:
+            summary_type = "debt"
+            sign = "+"
+
+        hours, minutes = divmod(abs(total_overtime), 60)
+        time_str = f"{hours}h {minutes}m" if hours > 0 else f"{minutes}m"
+
+        self.logger.info(f"Total accumulated time {summary_type}: {sign}{time_str}")
