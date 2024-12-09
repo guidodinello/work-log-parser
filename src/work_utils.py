@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
-from enums import EntryType
-from time_utils import TimeRange
+from src.enums import EntryType
+from src.time_utils import TimeRange
 
 
 @dataclass

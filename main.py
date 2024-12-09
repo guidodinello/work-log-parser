@@ -1,8 +1,8 @@
 import logging
 
-from time_utils import TimeParseError
-from work_log_parser import WorkLogParser
-from work_log_reporter import WorkLogReporter
+from src.time_utils import TimeParseError
+from src.work_log_parser import WorkLogParser
+from src.work_log_reporter import WorkLogReporter
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger("worklog")

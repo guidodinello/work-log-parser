@@ -1,6 +1,6 @@
-from custom_types import Logger
-from time_utils import TimeFormatter
-from work_utils import WorkDay
+from src.custom_types import Logger
+from src.time_utils import TimeFormatter
+from src.work_utils import WorkDay
 
 
 class WorkLogReporter:

@@ -2,8 +2,8 @@ import re
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from enums import EntryType
-from time_utils import TimeParseError, TimeParser, TimeRange
+from src.enums import EntryType
+from src.time_utils import TimeParseError, TimeParser, TimeRange
 
 
 class LogEntryParser(ABC):

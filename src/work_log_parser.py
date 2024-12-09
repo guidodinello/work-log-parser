@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from custom_types import Logger
-from enums import EntryType
-from parser_utils import BreakEntryParser, LogEntryParser, StartEntryParser
-from time_utils import TimeRange
-from work_utils import WorkDay
+from src.custom_types import Logger
+from src.enums import EntryType
+from src.parser_utils import BreakEntryParser, LogEntryParser, StartEntryParser
+from src.time_utils import TimeRange
+from src.work_utils import WorkDay
 
 
 class WorkLogParser:
